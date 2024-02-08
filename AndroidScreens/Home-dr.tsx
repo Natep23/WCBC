@@ -1,5 +1,4 @@
 import {View, Text, Button} from 'react-native'
-import Events from './Events'
 import {test} from '../navigation/rootNav'
 import { styles } from '../styles/StyleSheet'
 
