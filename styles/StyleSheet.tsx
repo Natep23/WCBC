@@ -7,6 +7,14 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    mainView : {
+      width: '100%',
+    },
+    titleText : {
+      fontSize: 20,
+      alignSelf: 'center',
+      marginTop: 20
+    },
     text: {
         fontSize: 12,
         alignSelf: 'center'

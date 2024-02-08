@@ -7,9 +7,9 @@ export const test = true;
 
 export const theme1 = {
     colors: {
-        primary: '#000000',
-        secondary: '#e5e85d',
-        background: '#cccecf'
+        primary: '#e5e85d',
+        background: '#cccecf',
+        secondary: '#0A42B0'
     }
 }
 

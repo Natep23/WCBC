@@ -1,5 +1,6 @@
 import React from "react"; 
-import { NavigationContainer } from "@react-navigation/native";
+import { Button, Image, View } from "react-native";
+import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { device } from "./rootNav";
 import { theme1 } from "./rootNav";
@@ -13,16 +14,25 @@ import Events from "../AndroidScreens/Events-dr";
 import Videos from "../AndroidScreens/Videos-dr";
 import Give from "../AndroidScreens/Give-dr";
 import Contacts from "../AndroidScreens/Contact-dr";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 
-const Stack = createNativeStackNavigator(); 
+const Stack = createBottomTabNavigator(); 
 
 export default function Generalstack() {
+    const colors = useTheme();
 
 return(
     <NavigationContainer theme= {theme1}>
         {(device == 'ios') && 
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={
+            {
+                headerStyle : {backgroundColor: theme1.colors.primary},
+                headerTitle: () => (<View><Image source= {{uri: '../assets/Images/Recreated_WCBC_Coin.png' }} style= {{width:12, height:12}}></Image></View>),
+                tabBarActiveTintColor: theme1.colors.secondary, 
+                headerRight: () => (<Button title='test' onPress={() => {console.log('pressed')}}></Button>)
+            }
+        }>
         <Stack.Screen name="Home" component={HomeIOS}/>
         <Stack.Screen name="Events" component={EventsIOS}/>
         <Stack.Screen name="Videos" component={VideosIOS}/>

@@ -13,14 +13,16 @@ import Events from "../AndroidScreens/Events-dr";
 import Videos from "../AndroidScreens/Videos-dr";
 import Give from "../AndroidScreens/Give-dr";
 import Contacts from "../AndroidScreens/Contact-dr";
+import { RootStackParamList } from "../types";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export default function AdminStack(){
-    const Stack = createNativeStackNavigator();
+    const Stack = createBottomTabNavigator();
 
     return(
         <NavigationContainer theme={theme1}>
         {(device == 'ios') && 
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeIOS}/>
         <Stack.Screen name="Events" component={EventsIOS}/>
         <Stack.Screen name="Videos" component={VideosIOS}/>
