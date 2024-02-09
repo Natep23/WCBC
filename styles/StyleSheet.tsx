@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
     mainView : {
       width: '100%',
     },
+    logo: {
+      width:40,
+      height:40
+    },
     titleText : {
       fontSize: 20,
       alignSelf: 'center',
