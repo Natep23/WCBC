@@ -3,7 +3,7 @@ import Generalstack from "./generalStack";
 import AdminStack from "./adminStack";
 import { Platform } from "react-native";
 
-export const test = true;
+export const test = false;
 
 export const theme1 = {
     colors: {

@@ -1,5 +1,6 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { Button, Image, View, TouchableOpacity } from "react-native";
+import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; 
 import { theme1 } from "./rootNav";
 import { device } from "./rootNav";
@@ -15,19 +16,68 @@ import Give from "../AndroidScreens/Give-dr";
 import Contacts from "../AndroidScreens/Contact-dr";
 import { RootStackParamList } from "../types";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { styles } from "../styles/StyleSheet";
+import {FontAwesome5, FontAwesome, FontAwesome6, Octicons} from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+
 
 export default function AdminStack(){
+    const navRef = useNavigationContainerRef()
     const Stack = createBottomTabNavigator();
 
     return(
-        <NavigationContainer theme={theme1}>
+        <NavigationContainer ref={navRef} theme={theme1}>
         {(device == 'ios') && 
-        <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeIOS}/>
-        <Stack.Screen name="Events" component={EventsIOS}/>
-        <Stack.Screen name="Videos" component={VideosIOS}/>
-        <Stack.Screen name="Give" component={GiveIOS}/>
-        <Stack.Screen name="Contact" component={ContactsIOS}/>
+        <Stack.Navigator  
+        screenOptions={
+            {
+                headerStyle : {backgroundColor: theme1.colors.primary},
+                headerTitle: () => (
+                    <TouchableOpacity onPress={()=> {navRef.navigate('Home')}}>
+                        <View>
+                            <Image source= {require( '../assets/Images/Recreated_WCBC_Coin.png') } style= {styles.logo}/>
+                        </View>
+                    </TouchableOpacity>
+                    ),
+                tabBarActiveTintColor: theme1.colors.secondary, 
+                headerRight: () => (    
+                    <TouchableOpacity onPress={() => {console.log('settings pressed')}}>
+                        <View style={{paddingRight: 12}}>
+                            <FontAwesome5 name="grip-lines" size={22}/>
+                        </View>
+                    </TouchableOpacity>
+                    ),
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => {[console.log('Chat pressed'), navRef.navigate('Contact')]}}>
+                        <View style={{paddingLeft: 12}}>
+                            <FontAwesome name="wechat" size={22}/>
+                        </View>
+                    </TouchableOpacity>
+                ),        
+                        
+            }
+        }>
+        <Stack.Screen name="Home" component={HomeIOS} options={
+            {
+                tabBarIcon: () => (<Ionicons name="home-sharp" size={24}/>)
+            }
+        }/>
+        <Stack.Screen name="Events" component={EventsIOS} options={
+            {
+                tabBarIcon: () => (<FontAwesome6 name="newspaper" size={24} color="black"/>)
+            }
+        }/>
+        <Stack.Screen name="Videos" component={VideosIOS} options={
+            {
+                tabBarIcon: () => (<Octicons name="video" size={24} color="black"/>)
+            }
+        }/>
+        <Stack.Screen name="Give" component={GiveIOS} options={
+            {
+                tabBarIcon: () => (<Image style= {styles.logo} source={require('../assets/Images/giveIcon.png')}/>)
+            }
+        }/>
+        <Stack.Screen name="Contact" component={ContactsIOS} options={{tabBarItemStyle: {display: 'none'}}}/>
         </Stack.Navigator>
         }
         {(device == 'Android') &&

@@ -1,4 +1,4 @@
-import React from "react"; 
+import React, { useState } from "react"; 
 import { Button, Image, View, TouchableOpacity } from "react-native";
 import { DrawerActions, NavigationContainer, useNavigation, useNavigationContainerRef, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,12 +16,16 @@ import Give from "../AndroidScreens/Give-dr";
 import Contacts from "../AndroidScreens/Contact-dr";
 import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { styles } from "../styles/StyleSheet";
-import {FontAwesome5, FontAwesome} from '@expo/vector-icons'
+import {FontAwesome5, FontAwesome, FontAwesome6, Octicons} from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+
 
 const Stack = createBottomTabNavigator(); 
 
 export default function Generalstack() {
 const navRef = useNavigationContainerRef()
+// const [isActiveColor, setActivateColor] = useState('black')
+
 return(
     <NavigationContainer ref={navRef} theme= {theme1}>
         {(device == 'ios') && 
@@ -54,10 +58,26 @@ return(
                         
             }
         }>
-        <Stack.Screen name="Home" component={HomeIOS}/>
-        <Stack.Screen name="Events" component={EventsIOS}/>
-        <Stack.Screen name="Videos" component={VideosIOS}/>
-        <Stack.Screen name="Give" component={GiveIOS}/>
+        <Stack.Screen name="Home" component={HomeIOS} options={
+            {
+                tabBarIcon: () => (<Ionicons name="home-sharp" size={24}/>)
+            }
+        }/>
+        <Stack.Screen name="Events" component={EventsIOS} options={
+            {
+                tabBarIcon: () => (<FontAwesome6 name="newspaper" size={24} color="black"/>)
+            }
+        }/>
+        <Stack.Screen name="Videos" component={VideosIOS} options={
+            {
+                tabBarIcon: () => (<Octicons name="video" size={24} color="black"/>)
+            }
+        }/>
+        <Stack.Screen name="Give" component={GiveIOS} options={
+            {
+                tabBarIcon: () => (<Image style= {styles.logo} source={require('../assets/Images/giveIcon.png')}/>)
+            }
+        }/>
         <Stack.Screen name="Contact" component={ContactsIOS} options={{tabBarItemStyle: {display: 'none'}}}/>
         </Stack.Navigator>
         }
