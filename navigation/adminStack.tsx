@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Image, View, TouchableOpacity } from "react-native";
 import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; 
-import { theme1 } from "./rootNav";
-import { device } from "./rootNav";
+import { theme1 } from "../App";
+import { device } from "../App";
 import HomeIOS from "../IOSScreens/Home-ios";
 import EventsIOS from "../IOSScreens/Events-ios";
 import VideosIOS from "../IOSScreens/Videos-ios";
@@ -35,7 +35,7 @@ export default function AdminStack(){
                 headerTitle: () => (
                     <TouchableOpacity onPress={()=> {navRef.navigate('Home')}}>
                         <View>
-                            <Image source= {require( '../assets/Images/Recreated_WCBC_Coin.png') } style= {styles.logo}/>
+                            <Image source= {require( '../assets/Images/WC-Logo.png') } style= {styles.logo}/>
                         </View>
                     </TouchableOpacity>
                     ),

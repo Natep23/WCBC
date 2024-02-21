@@ -11,8 +11,11 @@ export const styles = StyleSheet.create({
       backgroundColor: '#FAF8f8',
       width: Dimensions.get('screen').width,
       shadowColor: '#000010',
-      shadowOffset: { width: 1, height: 1},
-      shadowRadius: 1,
+      shadowOffset: { width: 0, height: 2},
+      shadowRadius: 4,
+      shadowOpacity: 0.25,
+      elevation: 5,
+      marginBottom: 14
 
     },
     Contentcontainer: {
@@ -24,6 +27,7 @@ export const styles = StyleSheet.create({
       alignSelf: 'center',
       width: Dimensions.get('screen').width - 34,
       height: Dimensions.get('screen').height - 620,
+      borderRadius: 4
     },
     fullscreen: {
       width: Dimensions.get('screen').width,
@@ -41,12 +45,12 @@ export const styles = StyleSheet.create({
       textShadowRadius: 8
     },
     addButton: {
-      position: 'absolute',
-      top: 0,
-      right: 14,
-      width: 40,
-      height: 40,
-      color: 'green'
+      width: 42,
+      height: 42,
+      color: 'green',
+      paddingBottom: 10,
+      alignSelf: 'center',
+      left: 5
     },
     deleteButton: {
       position:'absolute',
@@ -54,7 +58,57 @@ export const styles = StyleSheet.create({
       right:0,
       width:40,
       height:40,
-      color: 'tomato'
+      color: '#de605a'
+    },
+    modalView : {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#055",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#c7cace",
+      opacity: 0.989,
+    },
+    modalCloseBtn: {
+      position: 'absolute',
+      top: -30,
+      left: 112,
+      color: '#de605a'
+    },
+    ModalImgView: {
+      width: 134, 
+      height: 134, 
+      borderRadius: 5, 
+      borderWidth: .5,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    addToDBbtn: {
+      borderWidth: .1, 
+      marginTop:12, 
+      borderRadius: 4, 
+      backgroundColor: 'green', 
+      paddingLeft: 12, 
+      paddingRight: 12
+    },
+    annImg: {
+      margin: 14,
+      alignSelf: 'center',
+      borderWidth: .4,
+      borderRadius: 6
     },
     mainView : {
       width: Dimensions.get('screen').width,
@@ -75,4 +129,13 @@ export const styles = StyleSheet.create({
         fontSize: 12,
         alignSelf: 'center'
     },
+    textfield: {
+      borderWidth: 1,
+      borderRadius: 4,
+      paddingLeft: 75,
+      paddingRight: 75,
+      marginTop: 12,
+      // width: '80%'
+    },
+
   });

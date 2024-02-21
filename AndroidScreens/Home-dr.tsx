@@ -1,5 +1,5 @@
 import {View, Text, Button} from 'react-native'
-import {test} from '../navigation/rootNav'
+import {test} from '../App'
 import { styles } from '../styles/StyleSheet'
 import React from 'react'
 
