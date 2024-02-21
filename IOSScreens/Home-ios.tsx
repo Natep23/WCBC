@@ -1,5 +1,5 @@
 import {View, Text, Button, ScrollView, Image, Pressable, Alert, Modal, TextInput, KeyboardAvoidingView} from 'react-native'
-import {test} from '../App'
+import {test} from '../navigation/StackDirection'
 import { RootStackScreenProps } from '../types'
 import { styles } from '../styles/StyleSheet'
 import React, {useCallback, useRef, useState} from "react";

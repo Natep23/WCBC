@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Pressable, Image, ImageSourcePropType, Alert, DimensionValue, Text, StyleProp, TextStyle } from "react-native";
 import { Ionicons } from '@expo/vector-icons'
-import { test } from "../App";
+import { test } from "../navigation/StackDirection";
 import { styles } from "../styles/StyleSheet";
 
 
