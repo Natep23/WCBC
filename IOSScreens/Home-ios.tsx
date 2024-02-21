@@ -9,6 +9,8 @@ import { Video } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons'
 import { Annoucement } from '../CustomProps/AnnouncementCard';
 import * as ImagePicker from 'expo-image-picker'
+import { useQuery, useMutation } from 'convex/react';
+import { api } from "../convex/_generated/api"
 
 
 
@@ -24,6 +26,7 @@ export default function HomeIOS() {
     const randomString = 'This is a test of the annoucment prop'
     const url = 'http://www.wilsoncalvarybc.org'
     const iuri = require('../assets/Images/WC-Logo.png')
+    const events = useQuery(api.Annocements.getAnnoucments)
 
 
     const pickImg = async () => {
@@ -114,7 +117,7 @@ export default function HomeIOS() {
             }
         <ScrollView style={[styles.mainView,{backgroundColor: colors.background}]}>
             <View style={[styles.Contentcontainer, {backgroundColor: '#066593'}]}>
-                <Text style={[styles.titleText, {color:'white'}]}>Latest Video</Text>
+                {(test == false) && <Text style={[styles.titleText, {color: 'white'}]}>Admin</Text>}
                 <Video
                     ref={video}
                     style={styles.video}
@@ -124,14 +127,12 @@ export default function HomeIOS() {
                     onPlaybackStatusUpdate={setStatus}
                 />
                 <Text style={styles.videoTitle}>"{videoTitle}"</Text> 
-                {(test == false) && <Text style={styles.text}>Admin</Text>}
             </View>
             <View style={[styles.Contentcontainer, {paddingBottom: 5, backgroundColor: '#acd0e2'}]}>
-                <Text style={[styles.titleText]}>Annoucements</Text>
-
-                <Annoucement style={[styles.card,{backgroundColor: '#acd0e2'}]} imguri={iuri} imgsize={180} btnsize={25} message={randomString}/>
-                <Annoucement style={[styles.card,{backgroundColor: '#acd0e2'}]} imguri={iuri} imgsize={180} btnsize={25} message={randomString}/>
-
+                {events?.map(({_id, description, imageUrl}) => ( 
+                <Annoucement style={[styles.card,{backgroundColor: '#acd0e2'}]} imguri={{uri:imageUrl}} imgsize={180} btnsize={25} message={description} key={_id}/>
+                ))
+                }
                  {/* add a condtional here for if there are less than 3 annoucements shown */}
                  { (test == false) &&
                     <Pressable onPress= {addAnnoucement}>

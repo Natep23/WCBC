@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
       shadowRadius: 4,
       shadowOpacity: 0.25,
       elevation: 5,
-      marginBottom: 14
+      marginBottom: 10,
+      marginTop: 12
 
     },
     Contentcontainer: {
@@ -27,7 +28,8 @@ export const styles = StyleSheet.create({
       alignSelf: 'center',
       width: Dimensions.get('screen').width - 34,
       height: Dimensions.get('screen').height - 620,
-      borderRadius: 4
+      borderRadius: 4, 
+      marginTop: 12
     },
     fullscreen: {
       width: Dimensions.get('screen').width,
