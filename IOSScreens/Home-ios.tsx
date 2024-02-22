@@ -22,11 +22,12 @@ export default function HomeIOS() {
     const [isModalOpen, setModalVisibility] = useState(false)
     const [videoTitle, setVideoTitle] = useState('Video Title')
     const [image, setImage] = useState(null)
-    const [AnnMessge, setAnnMessage] = useState(null)
-    const randomString = 'This is a test of the annoucment prop'
+    const [AnnMessage, setAnnMessage] = useState('')
     const url = 'http://www.wilsoncalvarybc.org'
     const iuri = require('../assets/Images/WC-Logo.png')
-    const events = useQuery(api.Annocements.getAnnoucments)
+    const events = useQuery(api.Annocements.get3Annoucments)
+    const newAnn = useMutation(api.Annocements.addAnnoucments)
+
 
 
     const pickImg = async () => {
@@ -49,23 +50,29 @@ export default function HomeIOS() {
         console.log('Adding a new Annoucement')
     }
 
-    const handleMessage = (AnnMessge: string) => {
-        setAnnMessage(AnnMessge)
+    const handleMessage = (text) => {
+        setAnnMessage(text)
     }
 
-    const handleAddtoDatabase = () => {
+    const handleAddtoDatabase = async () => {
         if(image == null) {
             Alert.alert('Please Add a Image') 
-        } else if (AnnMessge == null) {
+        } else if (AnnMessage == '') {
             Alert.alert('Please Add A Message')
         }else {
-            //Add Upload to database here
             console.log('Adding to Database'); 
-            setModalVisibility(false); 
-            setImage(null)
-            setAnnMessage(null)
+            try {
+                await newAnn({ imageUrl: image, description: AnnMessage });
+                setModalVisibility(false);
+                setImage(null);
+                setAnnMessage(null);
+            } catch (error) {
+                console.error('Error adding to database:', error);
+                Alert.alert('Error', 'Failed to add announcement. Please try again later.');
+            }
         }
     }
+
 
     return(
         <View style={styles.container}>
@@ -101,9 +108,9 @@ export default function HomeIOS() {
                         <Text style={{marginTop: 12, marginBottom: 12}}>Add Message</Text>
                         
                         <TextInput
-                            value={AnnMessge}
+                            value={AnnMessage}
                             style={styles.textfield}
-                            onChange={handleMessage} 
+                            onChangeText={handleMessage} 
                             multiline   
                         />
                         
@@ -129,8 +136,16 @@ export default function HomeIOS() {
                 <Text style={styles.videoTitle}>"{videoTitle}"</Text> 
             </View>
             <View style={[styles.Contentcontainer, {paddingBottom: 5, backgroundColor: '#acd0e2'}]}>
-                {events?.map(({_id, description, imageUrl}) => ( 
-                <Annoucement style={[styles.card,{backgroundColor: '#acd0e2'}]} imguri={{uri:imageUrl}} imgsize={180} btnsize={25} message={description} key={_id}/>
+                {
+                events?.map(({_id, description, imageUrl}) => ( 
+                <Annoucement 
+                    style={[styles.card,{backgroundColor: '#acd0e2'}]} 
+                    imguri={{uri:imageUrl}} 
+                    imgsize={180} 
+                    btnsize={25} 
+                    message={description} 
+                    id={_id}
+                />
                 ))
                 }
                  {/* add a condtional here for if there are less than 3 annoucements shown */}

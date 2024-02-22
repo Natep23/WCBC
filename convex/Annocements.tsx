@@ -13,10 +13,22 @@ export const getAnnoucments = query({
     handler: async (ctx) => {
        const annoucemnetlist = await ctx.db
        .query("Annoucements")
+       .order("desc")
        .collect()
         return annoucemnetlist
     }
 })
+
+export const get3Annoucments = query({ 
+    handler: async (ctx) => {
+       const annoucemnetlist = await ctx.db
+       .query("Annoucements")
+       .order("desc")
+       .take(3)
+        return annoucemnetlist
+    }
+})
+
 
 export const getAnnoucmentIds = query({ 
     handler: async (ctx) => {
@@ -45,5 +57,12 @@ export const getAnnoucmentDescriptions = query({
        .collect()
         const filter = annoucemnetlist.map((q) => q.description)
         return filter
+    }
+})
+
+export const deleteAnnoucment = mutation({
+    args: {id : v.id("Annoucements")},
+    handler: async (ctx, args) => {
+        await ctx.db.delete(args.id)
     }
 })

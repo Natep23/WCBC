@@ -3,7 +3,8 @@ import { View, Pressable, Image, ImageSourcePropType, Alert, DimensionValue, Tex
 import { Ionicons } from '@expo/vector-icons'
 import { test } from "../navigation/StackDirection";
 import { styles } from "../styles/StyleSheet";
-
+import { api } from "../convex/_generated/api";
+import { useMutation } from "convex/react";
 
 
 type AnnoucementProp = {
@@ -12,29 +13,46 @@ type AnnoucementProp = {
     imgsize: DimensionValue;
     message: string;
     style: StyleProp<TextStyle>;
+    id : Id<"Annoucemnets">;
 }
 
-const handleDeleteAnnoucement = () => {
-    
-    Alert.alert('Warning', 'Are You Sure You Want to Delete?', [
-        {
-            text: 'Cancel', 
-            style: 'cancel', 
-            onPress: () => console.log('Delete Canceled')
-        }, 
-        {
-            text: 'Continue',
-            onPress: () => console.log('Deleting the annoucemnet') // add delete mutation here
+
+
+export const Annoucement = ({imguri, btnsize, message, imgsize, style, id}: AnnoucementProp,) => {
+
+    const removeAnnouncement = useMutation(api.Annocements.deleteAnnoucment);
+
+    const handleDeleteAnnouncement = async () => {
+        try {
+            // Call the mutation function directly
+            await removeAnnouncement({ id: id });
+            console.log('Announcement deleted successfully');
+        } catch (error) {
+            console.error('Failed to delete announcement:', error);
         }
-    ]
-    )
-}
-
-export const Annoucement = ({imguri, btnsize, message, imgsize, style}: AnnoucementProp) => {
+    };
+    
+    const handleDeleteConfirmation = () => {
+        Alert.alert(
+            'Warning',
+            'Are you sure you want to delete?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                    onPress: () => console.log('Delete canceled'),
+                },
+                {
+                    text: 'Continue',
+                    onPress: handleDeleteAnnouncement,
+                },
+            ]
+        );
+    };
     return (
         <View style={style}>
                     {(test == false) &&                      
-                     <Pressable onPress={handleDeleteAnnoucement} key={'deletePress'}>
+                     <Pressable onPress={handleDeleteConfirmation} key={'deletePress'}>
                         <Ionicons style={[styles.deleteButton]} name='close-circle' size={btnsize} key={'delete'}/>
                      </Pressable>
                     }
