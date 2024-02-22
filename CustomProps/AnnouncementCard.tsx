@@ -13,7 +13,7 @@ type AnnoucementProp = {
     imgsize: DimensionValue;
     message: string;
     style: StyleProp<TextStyle>;
-    id : Id<"Annoucemnets">;
+    id : string;
 }
 
 
