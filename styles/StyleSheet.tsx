@@ -139,5 +139,28 @@ export const styles = StyleSheet.create({
       marginTop: 12,
       // width: '80%'
     },
+    contactTxtField: {
+      borderWidth: .168,
+      borderRadius: 4,
+      padding: 12,
+      marginLeft: 9,
+      marginRight: 9,
+      backgroundColor: '#dee1ef'
+    },
+    MessageTxtField: {
+      borderWidth: .3,
+      borderRadius: 4,
+      paddingLeft: 12,
+      paddingBottom: 82,
+      marginLeft: 9,
+      marginRight: 9,
+      backgroundColor: '#dee1ef',
+
+    },
+    nameInpt : {
+      fontSize: 12, 
+      padding:12, 
+      marginTop: 4 
+    },
 
   });

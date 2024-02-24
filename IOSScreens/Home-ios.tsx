@@ -145,6 +145,7 @@ export default function HomeIOS() {
                     btnsize={25} 
                     message={description} 
                     id={_id}
+                    key={_id}
                 />
                 ))
                 }

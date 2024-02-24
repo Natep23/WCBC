@@ -23,7 +23,9 @@ export default function EventsIOS({navigation}) {
                     imgsize={180} 
                     btnsize={25} 
                     message={description} 
-                    id={_id}/>
+                    id={_id}
+                    key={_id}
+                    />
                 ))
             }
             { (test == false) &&
