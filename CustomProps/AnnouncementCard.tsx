@@ -14,11 +14,12 @@ type AnnoucementProp = {
     message: string;
     style: StyleProp<TextStyle>;
     id : string;
+    isShareable: boolean;
 }
 
 
 
-export const Annoucement = ({imguri, btnsize, message, imgsize, style, id}: AnnoucementProp,) => {
+export const Annoucement = ({imguri, btnsize, message, imgsize, style, id, isShareable}: AnnoucementProp) => {
 
     const removeAnnouncement = useMutation(api.Annocements.deleteAnnoucment);
 
@@ -51,13 +52,22 @@ export const Annoucement = ({imguri, btnsize, message, imgsize, style, id}: Anno
     };
     return (
         <View style={style}>
-                    {(test == false) &&                      
+                    {(!test) &&                      
                      <Pressable onPress={handleDeleteConfirmation} key={'deletePress'}>
                         <Ionicons style={[styles.deleteButton]} name='close-circle' size={btnsize} key={'delete'}/>
                      </Pressable>
                     }
                     <Image source={imguri} style={[styles.annImg,{width: imgsize, height: imgsize}]}/>
                     <Text style={[styles.text, {padding: 14}]}>{message}</Text>
-                </View>
+                    {
+                        (isShareable) &&
+                        <View style={styles.annShareView}>
+                            <Text style={styles.annShareTxt}>Share</Text>
+                            <Pressable onPress={() => {console.log('Share Pressed')}}>
+                            <Ionicons style={styles.annShare} name="share-outline" size={24} color="black" />
+                            </Pressable>
+                        </View>
+                    }
+        </View>
     )
 }

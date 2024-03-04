@@ -7,7 +7,7 @@ export default function Home({navigation}) {
     return(
         <View>
             <Text style={styles.text}>Home for Droids</Text>
-            {(test == false) && <Text>Admin</Text>}
+            {(!test) && <Text>Admin</Text>}
         </View>
     )
 }

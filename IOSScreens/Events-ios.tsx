@@ -24,11 +24,12 @@ export default function EventsIOS({navigation}) {
                     btnsize={25} 
                     message={description} 
                     id={_id}
+                    isShareable
                     key={_id}
                     />
                 ))
             }
-            { (test == false) &&
+            { (!test) &&
                     <Pressable onPress= {addAnnoucement}>
                         <Ionicons style={styles.addButton} name='add-circle' key={'add'} size={30}/>
                     </Pressable>

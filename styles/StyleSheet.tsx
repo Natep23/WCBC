@@ -112,6 +112,17 @@ export const styles = StyleSheet.create({
       borderWidth: .4,
       borderRadius: 6
     },
+    annShareView: {
+      flexDirection: 'row',
+      borderTopWidth: .2,
+      justifyContent: 'center'
+    },
+    annShareTxt: {
+      padding: 12,
+    },
+    annShare: {
+      padding: 7,
+    },
     mainView : {
       width: Dimensions.get('screen').width,
     },

@@ -124,7 +124,7 @@ export default function HomeIOS() {
             }
         <ScrollView style={[styles.mainView,{backgroundColor: colors.background}]}>
             <View style={[styles.Contentcontainer, {backgroundColor: '#066593'}]}>
-                {(test == false) && <Text style={[styles.titleText, {color: 'white'}]}>Admin</Text>}
+                {(!test) && <Text style={[styles.titleText, {color: 'white'}]}>Admin</Text>}
                 <Video
                     ref={video}
                     style={styles.video}
@@ -150,7 +150,7 @@ export default function HomeIOS() {
                 ))
                 }
                  {/* add a condtional here for if there are less than 3 annoucements shown */}
-                 { (test == false) &&
+                 { (!test) &&
                     <Pressable onPress= {addAnnoucement}>
                         <Ionicons style={styles.addButton} name='add-circle' key={'add'} size={30}/>
                     </Pressable>
