@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { test } from "../navigation/StackDirection";
 import { styles } from "../styles/StyleSheet";
 import { api } from "../convex/_generated/api";
+import { Id } from "../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 
 
@@ -13,8 +14,8 @@ type AnnoucementProp = {
     imgsize: DimensionValue;
     message: string;
     style: StyleProp<TextStyle>;
-    id : string;
-    isShareable: boolean;
+    id : Id<'Annoucements'>;
+    isShareable?: boolean;
 }
 
 

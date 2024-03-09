@@ -2,6 +2,10 @@ import {mutation, query} from "./_generated/server";
 import {v} from "convex/values";
 
 
+export const genUploadURL = mutation(async (ctx) => {
+    return await ctx.storage.generateUploadUrl()
+})
+
 export const addAnnoucments = mutation({ 
     args: {imageUrl : v.string(), description : v.string()},
     handler: async (ctx, args) => {

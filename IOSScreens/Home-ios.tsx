@@ -11,6 +11,8 @@ import { Annoucement } from '../CustomProps/AnnouncementCard';
 import * as ImagePicker from 'expo-image-picker'
 import { useQuery, useMutation } from 'convex/react';
 import { api } from "../convex/_generated/api"
+import { useNavigation } from '@react-navigation/native';
+import { genUploadURL } from '../convex/Annocements';
 
 
 
@@ -22,11 +24,15 @@ export default function HomeIOS() {
     const [isModalOpen, setModalVisibility] = useState(false)
     const [videoTitle, setVideoTitle] = useState('Video Title')
     const [image, setImage] = useState(null)
+    const [imgType, setType] = useState(null)
+    // const [storageId, setStorageID] = useState()
     const [AnnMessage, setAnnMessage] = useState('')
     const url = 'http://www.wilsoncalvarybc.org'
     const iuri = require('../assets/Images/WC-Logo.png')
     const events = useQuery(api.Annocements.get3Annoucments)
     const newAnn = useMutation(api.Annocements.addAnnoucments)
+    const uploadURL = useMutation(api.Annocements.genUploadURL)
+    const nav = useNavigation();
 
 
 
@@ -35,13 +41,27 @@ export default function HomeIOS() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4,3],
+            base64: true,
             quality: 1,
+            
         });
-        console.log(result)
+        // console.log(result)
+
 
         if(!result.canceled) {
             setImage(result.assets[0].uri)
+            setType(result.assets[0].base64)
+
+            const postlink = await uploadURL()
+                const upload = await fetch(postlink, 
+                    {
+                        method: 'POST',
+                        headers: {"Content-Type": "image/jpeg"},
+                        body: result.assets[0].uri
+                    })
+                    const {storageId} = await upload
+                // setStorageID(getUpload)
+                    console.log(getUpload)
         }
     }
 
@@ -72,7 +92,10 @@ export default function HomeIOS() {
             }
         }
     }
-
+    const navtoEvents = () => {
+        console.log('Going to Events Page')
+        nav.navigate('Events') 
+    }
 
     return(
         <View style={styles.container}>
@@ -136,6 +159,7 @@ export default function HomeIOS() {
                 <Text style={styles.videoTitle}>"{videoTitle}"</Text> 
             </View>
             <View style={[styles.Contentcontainer, {paddingBottom: 5, backgroundColor: '#acd0e2'}]}>
+                <Pressable onPress={navtoEvents}>
                 {
                 events?.map(({_id, description, imageUrl}) => ( 
                 <Annoucement 
@@ -149,6 +173,7 @@ export default function HomeIOS() {
                 />
                 ))
                 }
+                </Pressable>
                  {/* add a condtional here for if there are less than 3 annoucements shown */}
                  { (!test) &&
                     <Pressable onPress= {addAnnoucement}>
