@@ -1,4 +1,4 @@
-import {View, Text, Button, ScrollView, Image, Pressable, Alert, Modal, TextInput, KeyboardAvoidingView} from 'react-native'
+import {View, Text, Button, ScrollView, Image, Pressable, Alert, Modal, TextInput, KeyboardAvoidingView, Platform} from 'react-native'
 import {test} from '../navigation/StackDirection'
 import { RootStackScreenProps } from '../types'
 import { styles } from '../styles/StyleSheet'
@@ -9,10 +9,14 @@ import { Video } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons'
 import { Annoucement } from '../CustomProps/AnnouncementCard';
 import * as ImagePicker from 'expo-image-picker'
-import { useQuery, useMutation } from 'convex/react';
+import { useQuery, useMutation, useAction } from 'convex/react';
 import { api } from "../convex/_generated/api"
 import { useNavigation } from '@react-navigation/native';
-import { genUploadURL } from '../convex/Annocements';
+import { genUploadURL, getImgURL } from '../convex/Annocements';
+import * as FileSystem from 'expo-file-system';
+import { Validator } from 'convex/values';
+import { Id } from '../convex/_generated/dataModel';
+
 
 
 
@@ -24,15 +28,15 @@ export default function HomeIOS() {
     const [isModalOpen, setModalVisibility] = useState(false)
     const [videoTitle, setVideoTitle] = useState('Video Title')
     const [image, setImage] = useState(null)
-    const [imgType, setType] = useState(null)
-    // const [storageId, setStorageID] = useState()
     const [AnnMessage, setAnnMessage] = useState('')
     const url = 'http://www.wilsoncalvarybc.org'
     const iuri = require('../assets/Images/WC-Logo.png')
     const events = useQuery(api.Annocements.get3Annoucments)
     const newAnn = useMutation(api.Annocements.addAnnoucments)
     const uploadURL = useMutation(api.Annocements.genUploadURL)
+    const storageID = useQuery(api.Annocements.getStorageID)
     const nav = useNavigation();
+
 
 
 
@@ -43,6 +47,7 @@ export default function HomeIOS() {
             allowsEditing: true,
             base64: true,
             quality: 1,
+            allowsMultipleSelection: false
             
         });
         // console.log(result)
@@ -50,20 +55,19 @@ export default function HomeIOS() {
 
         if(!result.canceled) {
             setImage(result.assets[0].uri)
-            setType(result.assets[0].base64)
-
-            const postlink = await uploadURL()
-                const upload = await fetch(postlink, 
-                    {
-                        method: 'POST',
-                        headers: {"Content-Type": "image/jpeg"},
-                        body: result.assets[0].uri
-                    })
-                    const {storageId} = await upload
-                // setStorageID(getUpload)
-                    console.log(getUpload)
+            const response = await fetch(result.assets[0].uri);
+                const postlink = await uploadURL()
+                    const upload = await fetch(postlink, 
+                        {
+                            method: 'POST',
+                            headers: {"Content-Type": "image/jpeg"},
+                            body: await response.blob()
+                        }).then(async () => {
+                            console.log('Sent')                        }
+                        )
+                    }
         }
-    }
+    
 
     const addAnnoucement = () => {
         setModalVisibility(true)
@@ -75,14 +79,13 @@ export default function HomeIOS() {
     }
 
     const handleAddtoDatabase = async () => {
-        if(image == null) {
-            Alert.alert('Please Add a Image') 
-        } else if (AnnMessage == '') {
-            Alert.alert('Please Add A Message')
+        if((image == null) || (AnnMessage == null)) {
+            Alert.alert('Please Add Data') 
         }else {
             console.log('Adding to Database'); 
-            try {
-                await newAnn({ imageUrl: image, description: AnnMessage });
+            try { 
+                await newAnn({ imageUrl: storageID[0], description: AnnMessage })
+                console.log('Added Successfully!')
                 setModalVisibility(false);
                 setImage(null);
                 setAnnMessage(null);
@@ -96,7 +99,6 @@ export default function HomeIOS() {
         console.log('Going to Events Page')
         nav.navigate('Events') 
     }
-
     return(
         <View style={styles.container}>
             {

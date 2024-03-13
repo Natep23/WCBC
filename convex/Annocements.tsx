@@ -1,11 +1,39 @@
-import {mutation, query} from "./_generated/server";
+import {action, mutation, query} from "./_generated/server";
 import {v} from "convex/values";
+import { Id } from "./_generated/dataModel";
+import { Annoucement } from "../CustomProps/AnnouncementCard";
+import { useQuery } from "convex/react";
+import { api } from "./_generated/api";
+
 
 
 export const genUploadURL = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl()
 })
 
+export const getStorageID = query({
+    // args: {},
+    handler: async (ctx) => {
+       const lastData = await ctx.db.system
+       .query("_storage")
+       .order('desc')
+       .take(1)
+
+       const returnedData = await Promise.all(lastData.map(async (data) => {
+           const url = await ctx.storage.getUrl(data._id)
+           return  url
+       }))
+        return returnedData
+    } 
+})
+
+
+export const deleteImg = mutation({
+    args: { storageId: v.id('_storage')},
+    handler: async (ctx,args) => {
+        return await ctx.storage.delete(args.storageId)
+    }
+})
 export const addAnnoucments = mutation({ 
     args: {imageUrl : v.string(), description : v.string()},
     handler: async (ctx, args) => {

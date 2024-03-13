@@ -7,6 +7,7 @@ import { welcome } from '../LengthyTexts/ConnectCardWelcome'
 import { useQuery, useMutation } from 'convex/react'
 import { api } from '../convex/_generated/api'
 import { useNavigation } from '@react-navigation/native'
+import { RecievedMessage } from '../CustomProps/RecievedMessagesCard'
 
 export default function ContactsIOS() {
     const [fName, setfirstName] = useState('')
@@ -14,6 +15,7 @@ export default function ContactsIOS() {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const addNewMessage = useMutation(api.Messages.addMessage)
+    const messages = useQuery(api.Messages.getMessage)
     const navigation = useNavigation()
 
     const handlefName = (text: string) => {
@@ -94,8 +96,25 @@ export default function ContactsIOS() {
             ]
             : 
             [
-                <Text style={[styles.titleText, {alignSelf: 'flex-start', padding: 10}]} key={1}>User Messages</Text>,
-            
+                <View style={[styles.card,{backgroundColor: '#7ab8d6'}]} key={1}>
+                    <Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> User Messages </Text>
+                </View>,
+                <View style={[styles.card,{backgroundColor: '#7ab8d6'}]} key={2}>
+                    {messages && messages.length > 0 ? 
+                    messages?.map((message) => (
+                        <RecievedMessage 
+                        message={message.message} 
+                        firstname={message.firstName} 
+                        lastname={message.lastName} 
+                        email={message.email} 
+                        time={message._creationTime} 
+                        id={message._id}
+                        key={message._id}
+                        />
+                    ))
+                    : 
+                    (<Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> No New Messages </Text>) } 
+                </View>,
             ]
             
             }

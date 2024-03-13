@@ -23,6 +23,7 @@ type AnnoucementProp = {
 export const Annoucement = ({imguri, btnsize, message, imgsize, style, id, isShareable}: AnnoucementProp) => {
 
     const removeAnnouncement = useMutation(api.Annocements.deleteAnnoucment);
+    const removeAnnImg = useMutation(api.Annocements.deleteImg)
 
     const handleDeleteAnnouncement = async () => {
         try {

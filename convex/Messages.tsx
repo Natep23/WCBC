@@ -19,10 +19,18 @@ export const addMessage = mutation({
 })
 
 export const getMessage = query({
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         const newMessages = await ctx.db
         .query("ContactMessages")
+        .order("desc")
         .collect()
         return newMessages
+    }
+})
+
+export const deleteMessage = mutation({
+    args: {id: v.id("ContactMessages")},
+    handler: async (ctx, args) => {
+        await ctx.db.delete(args.id)
     }
 })
