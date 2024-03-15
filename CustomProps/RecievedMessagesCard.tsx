@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable, Text, Alert} from "react-native";
+import { View, Pressable, Text, Alert, Modal} from "react-native";
 import {styles} from "../styles/StyleSheet";
 import { api } from "../convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -24,11 +24,13 @@ export const RecievedMessage = ({message, firstname, lastname, email,time,id}: R
     const date = new Date(time).toLocaleDateString();
     const removeMessage = useMutation(api.Messages.deleteMessage);
 
+    const [modalVisible, setModalVisible] = React.useState(false);
     const handleDeleteMessage = async () => {
         try {
             // Call the mutation function directly
             await removeMessage({ id: id });
             console.log('Message deleted successfully');
+            setModalVisible(!modalVisible);
         } catch (error) {
             console.error('Failed to delete Message:', error);
         }
@@ -52,15 +54,46 @@ export const RecievedMessage = ({message, firstname, lastname, email,time,id}: R
         );
     };
     return (
-        <View style={[styles.card,{backgroundColor: '#acd0e2'}]}>
-            <Pressable onPress={handleDeleteConfirmation} key={'deletePress'}>
-                        <Ionicons style={[styles.deleteButton]} name='close-circle' size={24} key={'delete'}/>
+        <View style={[styles.card,{backgroundColor: '#acd0e2', flexDirection: 'column'}]}>
+            {modalVisible && (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible(!modalVisible);
+                    }}
+                    >
+                    <View style={[styles.centeredView, {opacity: 0.96}]}>
+                    <View style={[styles.modalView, {width: '88%'}]}>
+                        <Text style={[styles.titleText, {marginBottom: 4}]}>{fullName}</Text>
+                        <Text style={{marginBottom: 14}}>{message}</Text>
+                        <Text style={{marginBottom: 16}}>{email}</Text>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Pressable style={[{backgroundColor: 'blue', margin: 4, padding: 8, borderRadius: 6}]} onPress={() => setModalVisible(!modalVisible)}>
+                                <Text style={{color: 'white'}}>Close</Text>
+                            </Pressable>
+                            <Pressable style={[{backgroundColor: 'red', margin: 4, padding: 8, borderRadius: 6}]} onPress={handleDeleteConfirmation}>
+                                <Text style={{color: 'white'}}>Delete</Text>
+                            </Pressable>
+                        </View>
+                        <Text style={{position: 'absolute', bottom: 3, right: 255, fontWeight: '300'}}>{date}</Text>
+                        <Text style={{position: 'absolute', bottom: 3, right: 10, fontWeight: '300'}}>{readeabletime}</Text>
+                            
+                    </View>
+                    </View>
+                    </Modal>
+            )}
+            <Pressable onPress={() => setModalVisible(true)}>
+            <Text style={{alignContent: 'flex-start', paddingLeft: 8, paddingTop: 4, fontWeight: 'bold', fontStyle: 'italic'}}>{fullName}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={{alignContent: 'flex-start', paddingLeft: 8, fontWeight: '300'}}>{message}</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}> 
+                <Text style={{paddingTop: 2, paddingLeft: 8 , fontWeight: '300' }}>{email}</Text>
+                <Text style={{paddingTop: 2, paddingRight: 6, fontWeight: '300'}}>{date}</Text>
+                <Text style={{paddingTop: 2, paddingRight: 8, fontWeight: '300'}}>{readeabletime}</Text>
+            </View>
             </Pressable>
-            <Text style={styles.text}>{fullName}</Text>
-            <Text style={styles.text}>{message}</Text>
-            <Text style={styles.text}>{email}</Text>
-            <Text style={styles.text}>{date}</Text>
-            <Text style={styles.text}>{readeabletime}</Text>
         </View>    
     )
 

@@ -96,11 +96,12 @@ export default function ContactsIOS() {
             ]
             : 
             [
-                <View style={[styles.card,{backgroundColor: '#7ab8d6'}]} key={1}>
-                    <Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> User Messages </Text>
+                <View style={[styles.card,{backgroundColor: '#7ab8d6', marginBottom: 1}]} key={1}>
+                    <Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> Messages </Text>
                 </View>,
                 <View style={[styles.card,{backgroundColor: '#7ab8d6'}]} key={2}>
-                    {messages && messages.length > 0 ? 
+                    {
+                    messages && messages.length > 0 ? 
                     messages?.map((message) => (
                         <RecievedMessage 
                         message={message.message} 
@@ -113,7 +114,10 @@ export default function ContactsIOS() {
                         />
                     ))
                     : 
-                    (<Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> No New Messages </Text>) } 
+                    (
+                        <Text style={[styles.titleText, {alignSelf: 'center', padding: 10}]}> No New Messages </Text>
+                    ) 
+                    } 
                 </View>,
             ]
             
