@@ -1,21 +1,17 @@
-import {View, Text, Button, ScrollView, Image, Pressable, Alert, Modal, TextInput, KeyboardAvoidingView, Platform} from 'react-native'
+import {View, Text, ScrollView, Image, Pressable, Alert, Modal, TextInput, KeyboardAvoidingView} from 'react-native'
 import {test} from '../navigation/StackDirection'
-import { RootStackScreenProps } from '../types'
 import { styles } from '../styles/StyleSheet'
-import React, {useCallback, useRef, useState} from "react";
+import React, { useRef, useState} from "react";
 import { useTheme } from '@react-navigation/native'
 import { OpenURLButton } from '../CustomProps/OpenURL';
 import { Video } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons'
 import { Annoucement } from '../CustomProps/AnnouncementCard';
 import * as ImagePicker from 'expo-image-picker'
-import { useQuery, useMutation, useAction } from 'convex/react';
+import { useQuery, useMutation } from 'convex/react';
 import { api } from "../convex/_generated/api"
 import { useNavigation } from '@react-navigation/native';
-import { genUploadURL, getImgURL } from '../convex/Annocements';
-import * as FileSystem from 'expo-file-system';
-import { Validator } from 'convex/values';
-import { Id } from '../convex/_generated/dataModel';
+
 
 
 
@@ -34,7 +30,8 @@ export default function HomeIOS() {
     const events = useQuery(api.Annocements.get3Annoucments)
     const newAnn = useMutation(api.Annocements.addAnnoucments)
     const uploadURL = useMutation(api.Annocements.genUploadURL)
-    const storageID = useQuery(api.Annocements.getStorageID)
+    const storageLink = useQuery(api.Annocements.getStorageLink)
+    const storageId = useQuery(api.Annocements.getStorageID)
     const nav = useNavigation();
 
 
@@ -84,7 +81,7 @@ export default function HomeIOS() {
         }else {
             console.log('Adding to Database'); 
             try { 
-                await newAnn({ imageUrl: storageID[0], description: AnnMessage })
+                await newAnn({ imageUrl: storageLink[0], description: AnnMessage, storageId: storageId[0] })
                 console.log('Added Successfully!')
                 setModalVisibility(false);
                 setImage(null);
@@ -123,7 +120,7 @@ export default function HomeIOS() {
                         {
                         image ?
                         <Pressable onPress={pickImg}> 
-                            <Image source={{uri:image}} style={styles.ModalImgView}/>
+                            <Image resizeMode='stretch' source={{uri:image}} style={styles.ModalImgView}/>
                         </Pressable>     
                         :
                             <Pressable style={styles.ModalImgView} onPress={pickImg}>
@@ -163,14 +160,15 @@ export default function HomeIOS() {
             <View style={[styles.Contentcontainer, {paddingBottom: 5, backgroundColor: '#acd0e2'}]}>
                 <Pressable onPress={navtoEvents}>
                 {
-                events?.map(({_id, description, imageUrl}) => ( 
+                events?.map(({_id, description, imageUrl, stoargeNum}) => ( 
                 <Annoucement 
                     style={[styles.card,{backgroundColor: '#acd0e2'}]} 
                     imguri={{uri:imageUrl}} 
-                    imgsize={180} 
+                    imgsize={200} 
                     btnsize={25} 
                     message={description} 
                     id={_id}
+                    str_id={stoargeNum}
                     key={_id}
                 />
                 ))

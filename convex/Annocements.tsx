@@ -11,7 +11,7 @@ export const genUploadURL = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl()
 })
 
-export const getStorageID = query({
+export const getStorageLink = query({
     // args: {},
     handler: async (ctx) => {
        const lastData = await ctx.db.system
@@ -27,17 +27,30 @@ export const getStorageID = query({
     } 
 })
 
+export const getStorageID = query({
+    args: {},
+    handler: async (ctx) => {
+        const ID = await ctx.db.system
+        .query("_storage")
+        .order('desc')
+        .take(1).then((data) => data.map((data) => data._id))
 
-export const deleteImg = mutation({
-    args: { storageId: v.id('_storage')},
-    handler: async (ctx,args) => {
-        return await ctx.storage.delete(args.storageId)
+
+        return ID
     }
 })
+
+export const deleteImg = mutation({
+    args: { storageNum: v.id('_storage')},
+    handler: async (ctx,args) => {
+        return await ctx.storage.delete(args.storageNum)
+    }
+})
+
 export const addAnnoucments = mutation({ 
-    args: {imageUrl : v.string(), description : v.string()},
+    args: {imageUrl : v.string(), description : v.string(), storageId: v.id('_storage')},
     handler: async (ctx, args) => {
-       const event = await ctx.db.insert("Annoucements", {imageUrl: args.imageUrl, description: args.description})
+       const event = await ctx.db.insert("Annoucements", {imageUrl: args.imageUrl, description: args.description, stoargeNum: args.storageId})
     }
 }) 
 
